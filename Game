@@ -1,0 +1,113 @@
+import java.io.*;
+import java.util.*;
+
+
+public class Game {
+	
+	public Game () {
+
+	
+	}
+	
+	protected Game game;
+	protected Level levely;
+	protected Player player;
+	protected Scanner scanny;
+
+	private Boolean running = true;
+	private Boolean done = false;
+	
+	
+	public Boolean getRunning() {
+		
+		return this.running;
+		
+	}
+	
+	public Game getInstance() {
+		
+		return game;
+		
+	}
+	
+	public Level getLevel() {
+		
+		return levely;
+		
+	}
+	
+	public Player getPlayer() {
+		return player;
+	}
+	
+	public Boolean getDone() {
+		
+		return done;
+	}
+	
+	public void setRunning(Boolean running) {
+		
+		this.running = running;
+		
+	}
+	
+	public void setDone(Boolean done) {
+		
+		this.done = done; 
+	}
+		
+	public static void main(String[] args) throws IOException {
+		
+		Game game = new Game();
+		Level levely = new Level("C:\\Data\\new.txt");
+		Player player = new Player();
+		Scanner scanny = new Scanner(System.in);
+		
+		char [][] level = levely.loadLevel();
+	
+		while (game.getRunning() || !game.done) {
+			
+			if (!(levely.isElementOf(level, Blocks.BOX)) || !(levely.isElementOf(level, Blocks.BOX_LOCATION))) {
+				
+				levely.printLevel(level);
+				System.out.println("The game has been cleared!");
+				System.out.println("Congratulations." + "\n");
+				game.done = true;
+				break;
+				
+			}
+			
+			levely.printLevel(level);
+			
+			String input = scanny.next().toLowerCase();
+			
+			switch(input) {
+			
+			case "stop"  : game.setRunning(false);
+						   break;
+						   
+			case "north" : player.movePlayer(level, input);
+						   break;
+						   
+			case "south" : player.movePlayer(level, input);
+				           break;
+				           
+			case "west"  : player.movePlayer(level, input);
+			               break;
+			               
+			case "east"  : player.movePlayer(level, input);
+			               break;
+			               
+			default      : System.out.println ("Wrong input.");
+						   System.out.println ("Game over!");
+						   game.setRunning(false);
+						   break;
+			}
+			
+			System.out.println();
+		}
+		
+		scanny.close();
+	}
+		
+}
