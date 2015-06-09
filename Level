@@ -1,0 +1,141 @@
+import java.io.*;
+
+
+public class Level {
+	
+	public Level(String path) {
+		
+		this.path = path;
+	}
+	
+	public Level() {
+		
+	}
+	
+	protected String path;
+	
+public char[][] loadLevel () throws IOException {
+		
+		BufferedReader in = new BufferedReader(new FileReader(this.path));
+		
+		String line;
+		int countLines = 0;
+		
+		char [][] chars = new char[countRows()][countFields()];
+		
+		while ((line = in.readLine()) != null) { 
+	
+				
+				for (int i = 0; i<chars[countLines].length && i < line.length(); i++) {
+				
+						char content = line.charAt(i);
+						
+						switch(content) {
+						
+						case ' ': chars[countLines] [i] = content;
+								  break;
+								  
+						case '#': chars[countLines] [i] = content;
+								  break;
+								  
+						case '@': chars[countLines] [i] = content;
+								  break;
+								  
+						case '.': chars[countLines] [i] = content;
+								  break;
+								  
+						case '*': chars[countLines] [i] = content;
+						          break;
+						
+						case '$': chars[countLines] [i] = content;
+						          break;
+						          
+						default : chars[countLines] [i] = '#';
+						
+						}
+			}
+				
+			countLines++;
+		}
+		
+		in.close();		
+		return chars;
+	}
+	
+public int countRows() throws IOException {
+		
+		BufferedReader in = new BufferedReader(new FileReader(this.path));
+		int rows = 0;
+		
+		while ((in.readLine()) != null) {
+			
+			rows++;
+			
+		}
+		
+		in.close();
+		
+		return rows;
+	}
+	
+public int countFields() throws IOException {
+		
+		BufferedReader in = new BufferedReader(new FileReader(this.path));
+		int fields = 0;
+		String row = null;
+		
+		while ((row = in.readLine()) != null) {
+			
+				fields += row.length();
+			
+		}
+		in.close();
+		return fields;
+	}
+	
+public void printLevel(char[][] level) {
+		
+		for(int i = 0; i < level.length; i++) {
+			
+			for (int v = 0; v < level[i].length; v++ ) {
+				
+				System.out.print(level[i][v]);
+			}
+			
+			System.out.println();
+	}
+		System.out.println();
+}
+
+public char[][] transposeLevel(char[][] a, int y1, int x1, int y2, int x2) {
+		
+		char inhalt1 = a[y1][x1];
+		char inhalt2 = a[y2][x2];
+		
+		a[y2][x2] = inhalt1;
+		a[y1][x1] = inhalt2; 
+		
+		return a;
+		
+		
+	}
+
+public Boolean isElementOf(char[][] level, char b) {
+	
+	int counter = 0;
+	Boolean isElem = false;
+	
+	for(int i = 0; i < level.length; i++) {
+		
+		for (int v = 0; v < level[i].length; v++ ) {
+			
+			if (level [i][v] == b) counter++;
+		}
+}
+	if (counter != 0) isElem = true;
+	return isElem;
+	
+}
+
+
+}
