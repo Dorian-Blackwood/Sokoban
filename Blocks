@@ -1,0 +1,11 @@
+
+public class Blocks {
+
+	protected static final char PLAYER = '@';
+	protected static final char WALL = '#';
+	protected static final char FLOOR = ' ';
+	protected static final char BOX = '$';
+	protected static final char BOX_LOCATION = '.';
+	protected static final char DONE = '*';
+	
+}
