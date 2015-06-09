@@ -1,0 +1,303 @@
+public class Player {
+	
+	public static final String NORTH = "north";
+	public static final String SOUTH = "south";
+	public static final String WEST = "west";
+	public static final String EAST = "east";
+	
+	protected int x;
+	protected int y;
+	
+	protected int numBoxes;
+	
+public int getX() {
+	
+	return this.x;
+}
+
+public int getY() {
+	
+	return this.y;
+	
+}
+
+public void setX(int x) {
+	
+	this.x = x;
+	
+}
+
+public void setY(int y) {
+	
+	this.y = y;
+	
+}
+
+public void movePlayer(char[][] level, String direction) {
+	
+	for(int i = 0; i < level.length; i++) {
+		
+		for (int v = 0; v < level[i].length; v++ ) {
+			
+			if (level[i][v] == Blocks.PLAYER) {
+				
+				this.setX(v);
+				this.setY(i);
+	
+			}
+		}
+	}
+			switch(direction) {
+	
+			case NORTH: movePlayerNorth(level, y, x, direction);
+				  		break;
+				  
+			case SOUTH: movePlayerSouth(level, y, x, direction);
+				  		break;
+				  
+			case WEST:  movePlayerWest(level, y, x, direction);
+				  		break;
+				  
+			case EAST:  movePlayerEast(level, y, x, direction);
+				  		break;
+				  
+			default : 	break;
+	
+			}
+
+}
+	
+public char[][] movePlayerNorth(char[][] level, int y, int x, String direction) {
+		
+					Level levely = new Level();
+					
+					char content = level[y-1][x]; 
+			
+						switch (content) {
+					
+						case Blocks.FLOOR: levely.transposeLevel(level, y, x, y-1, x);
+						   				   break;
+						   				   
+						case Blocks.BOX : moveBox(level, direction, y-1, x);
+						                  if (level[y-2] [x] != Blocks.WALL) {
+			                                  movePlayer(level, direction);
+			                              }
+										  break;
+						
+						case Blocks.WALL:  System.out.println("Ouch!" + "\n");
+										   break;
+		   
+						default:          break;
+					
+						}	
+		
+		return level;
+}
+	
+public char[][] movePlayerSouth(char[][] level, int y, int x, String direction) {
+		
+				Level levely = new Level();
+				
+				char content = level[y+1][x]; 
+			
+					switch (content) {
+				
+					case Blocks.FLOOR: levely.transposeLevel(level, y, x, y+1, x);
+					   				   break;
+					   				   
+					case Blocks.BOX : moveBox(level, direction, y+1, x);
+									  if (level[y+2] [x] != Blocks.WALL) {
+						                  movePlayer(level, direction);
+						              }
+					                  break;
+					
+					case Blocks.WALL:  System.out.println("Ouch!" + "\n");
+									   break;
+			
+					default:          break;
+				
+					}	
+			
+					return level;
+				}
+	
+public char[][] movePlayerEast(char[][] level, int y, int x, String direction) {
+		
+	Level levely = new Level();
+	
+	char content = level[y][x+1]; 
+
+		switch (content) {
+	
+		case Blocks.FLOOR: levely.transposeLevel(level, y, x, y, x+1);
+		   				   break; 
+		   				   
+		case Blocks.BOX : moveBox(level, direction, y, x+1);
+						  if (level[y] [x+2] != Blocks.WALL) {
+						  movePlayer(level, direction);
+						  }
+		                  break;
+		
+		case Blocks.WALL:  System.out.println("Ouch!" + "\n");
+						   break;	
+
+		default:          break;
+	
+		}	
+
+		return level;
+	}
+
+public char[][] movePlayerWest(char[][] level, int y, int x, String direction) {
+		
+	Level levely = new Level();
+	
+	char content = level[y][x-1]; 
+
+		switch (content) {
+	
+		case Blocks.FLOOR: levely.transposeLevel(level, y, x, y, x-1);
+		   				   break;
+		   				   
+		case Blocks.BOX : moveBox(level, direction, y, x-1);
+		                  if (level[y] [x-2] != Blocks.WALL) {
+			                  movePlayer(level, direction);
+			              }
+		                  break;
+		
+		case Blocks.WALL:  System.out.println("Ouch!" + "\n");
+						   break;	
+
+		default:          break;
+	
+		}	
+
+		return level;
+}
+
+public char[][] moveBox(char[][] level, String direction, int y, int x) {
+	
+	if (direction.equals(NORTH)) moveBoxNorth(level, y, x);
+	if (direction.equals(SOUTH)) moveBoxSouth(level, y, x);
+	if (direction.equals(WEST))  moveBoxWest(level, y, x);
+	if (direction.equals(EAST))  moveBoxEast(level, y, x);
+	
+	return level;
+	
+}
+
+private char[][] moveBoxEast(char[][] level, int y, int x) {
+	
+			
+			Level levely = new Level(null);
+	
+				
+			char content = level[y][x+1];
+			
+				switch(content) {
+			
+				case Blocks.FLOOR        : levely.transposeLevel(level, y, x, y, x+1);
+		                                   break;
+		                       
+				case Blocks.BOX_LOCATION : level[y][x] = ' ';
+										   level[y][x+1] = Blocks.DONE;
+										   break;
+										   
+				case Blocks.WALL         : System.out.println("Box: Don't hurt me! Q.Q");
+				                           System.out.println();
+				                           break;
+		                       
+				default                  : break;                   
+				}
+
+	return level;
+	
+}
+
+private char[][] moveBoxWest(char[][] level, int y, int x) {
+	
+			
+			Level levely = new Level(null);
+		
+			char content = level[y][x-1];
+			
+				switch(content) {
+			
+				case Blocks.FLOOR        : levely.transposeLevel(level, y, x, y, x-1);
+		                                   break;
+		                       
+				case Blocks.BOX_LOCATION : level[y][x] = ' ';
+										   level[y][x-1] = Blocks.DONE;
+										   break;
+										   
+				case Blocks.WALL         : System.out.println("Box: Don't hurt me! Q.Q");
+				                           System.out.println();
+										   break;
+		                       
+				default                  : break; 
+				
+				}
+				
+	return level;
+	
+}
+
+private char[][] moveBoxSouth(char[][] level, int y, int x) {
+	
+			
+			Level levely = new Level(null);
+	
+				
+			char content = level[y][x+1];
+			
+				switch(content) {
+			
+				case Blocks.FLOOR        : levely.transposeLevel(level, y, x, y+1, x);
+		                                   break;
+		                       
+				case Blocks.BOX_LOCATION : level[y+1][x] = ' ';
+										   level[y+1][x] = Blocks.DONE;
+										   break;
+										   
+				case Blocks.WALL         : System.out.println("Box: Don't hurt me! Q.Q");
+				                           System.out.println();
+				                           break;
+		                       
+				default                  : break;                   
+				
+				}
+
+	return level;
+	
+}
+
+private char[][] moveBoxNorth(char[][] level, int y, int x) {
+		
+			
+			Level levely = new Level(null);
+	
+	
+			char content = level[y-1][x];
+			
+				switch(content) {
+			
+				case Blocks.FLOOR        : levely.transposeLevel(level, y, x, y-1, x);
+		                                   break;
+		                       
+				case Blocks.BOX_LOCATION : level[y][x] = ' ';
+										   level[y-1][x] = Blocks.DONE;
+										   break;
+										   
+				case Blocks.WALL         : System.out.println("Box: Don't hurt me! Q.Q");
+				                           System.out.println();
+				                           break;
+		                       
+				default                  : break;                   
+				
+				}
+
+	return level;
+	
+}
+
+}
